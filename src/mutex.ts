@@ -42,19 +42,11 @@ export default class RedisMutexImpl implements Mutex {
   }
 
   public async lock(options?: LockOptions): Promise<void> {
-    if (this.isLocked) {
-      throw new Error('Already locked');
-    }
-
     await withRetries(async () => {
-      this.isLocked = true;
-
       try {
         await this.tryToAcquireLock();
       } catch {
         await this.tryToReleaseLock();
-
-        this.isLocked = false;
 
         throw withRetries.RETRY_SYMBOL;
       }
@@ -62,28 +54,16 @@ export default class RedisMutexImpl implements Mutex {
   }
 
   public async tryToLock(): Promise<boolean> {
-    if (this.isLocked) {
-      throw new Error('Already locked');
-    }
-
-    this.isLocked = true;
-
     try {
       await this.tryToAcquireLock();
     } catch {
-      this.isLocked = false;
+      return false;
     }
 
-    return this.isLocked;
+    return true;
   }
 
   public async unlock(): Promise<void> {
-    if (!this.isLocked) {
-      throw new Error('Not locked');
-    }
-
-    this.isLocked = false;
-
     await waitForFirstN(
       this.clients,
       async (client) => {
@@ -134,8 +114,6 @@ export default class RedisMutexImpl implements Mutex {
       this.clients.length,
     );
   }
-
-  private isLocked = false;
 
   private readonly expireAfterMillis: number;
   private readonly retryOptions: WithRetriesOptions;

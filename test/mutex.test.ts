@@ -118,53 +118,6 @@ describe('mutex negative test cases. incorrect usage', () => {
     jest.resetAllMocks();
   });
 
-  it('should throw an exception if you try to call `tryToLock` method on a locked mutex', async () => {
-    const resourceId = '3dd6472f-4e4b-4559-b781-cc5d75c4f6f2';
-
-    const client = createRedisClientStub();
-
-    asMockedFunction(Lua.tryToAcquireLock).mockResolvedValueOnce('OK');
-
-    const mutex = new RedisMutex([client], resourceId);
-
-    await mutex.lock();
-
-    await expect(mutex.tryToLock()).rejects.toThrowError(new Error('Already locked'));
-
-    expect(Lua.tryToAcquireLock).toBeCalledTimes(1);
-    expect(Lua.tryToReleaseLock).toBeCalledTimes(0);
-  });
-
-  it('should throw an exception if you try to call `lock` method on a locked mutex', async () => {
-    const resourceId = '3dd6472f-4e4b-4559-b781-cc5d75c4f6f2';
-
-    const client = createRedisClientStub();
-
-    asMockedFunction(Lua.tryToAcquireLock).mockResolvedValueOnce('OK');
-
-    const mutex = new RedisMutex([client], resourceId);
-
-    await mutex.lock();
-
-    await expect(mutex.lock()).rejects.toThrowError(new Error('Already locked'));
-
-    expect(Lua.tryToAcquireLock).toBeCalledTimes(1);
-    expect(Lua.tryToReleaseLock).toBeCalledTimes(0);
-  });
-
-  it('should throw an exception if you try to call `unlock` method on a unlocked mutex', async () => {
-    const resourceId = '3dd6472f-4e4b-4559-b781-cc5d75c4f6f2';
-
-    const client = createRedisClientStub();
-
-    const mutex = new RedisMutex([client], resourceId);
-
-    await expect(mutex.unlock()).rejects.toThrowError(new Error('Not locked'));
-
-    expect(Lua.tryToAcquireLock).toBeCalledTimes(0);
-    expect(Lua.tryToReleaseLock).toBeCalledTimes(0);
-  });
-
   it('should throw an exception on failed quorum', async () => {
     const resourceId = '3dd6472f-4e4b-4559-b781-cc5d75c4f6f2';
     const options = {
