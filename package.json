@@ -1,6 +1,6 @@
 {
   "name": "redis-sp",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Redis synchronization primitives based on redlock algorithm",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
