@@ -1,4 +1,4 @@
-import { ArrayOf, ReadonlyArrayOf } from 'common/types/util';
+import { ArrayOf, ReadonlyArrayOf } from '../common/types/util';
 
 import MultiError from '../common/errors/multi-error';
 

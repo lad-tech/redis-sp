@@ -1,6 +1,6 @@
-import { RedisClient } from 'common/types/redis';
-import { Semaphore } from 'common/types/semaphore';
-import { ReadonlyArrayOf } from 'common/types/util';
+import { RedisClient } from './common/types/redis';
+import { Semaphore } from './common/types/semaphore';
+import { ReadonlyArrayOf } from './common/types/util';
 
 import Lua from './lua';
 import { unique } from './util/functional';

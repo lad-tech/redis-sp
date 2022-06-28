@@ -1,5 +1,5 @@
-import { RedisClient } from 'common/types/redis';
-import { ReadonlyArrayOf } from 'common/types/util';
+import { RedisClient } from '../common/types/redis';
+import { ReadonlyArrayOf } from '../common/types/util';
 
 function isMatchingScriptNotFoundError(err: Error) {
   return err.toString().includes('NOSCRIPT');

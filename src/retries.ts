@@ -1,4 +1,4 @@
-import { ArrayOf } from 'common/types/util';
+import { ArrayOf } from './common/types/util';
 
 import MaxRetryAttemptsError from './common/errors/max-retry-attempts-error';
 import { uniformRandom } from './util/random';
