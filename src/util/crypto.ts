@@ -1,4 +1,4 @@
-import crypto from 'crypto';
+import * as crypto from 'crypto';
 
 export function createSHA1Hash(input: string) {
   return crypto.createHash('sha1').update(input, 'utf8').digest('hex');

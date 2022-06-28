@@ -1,6 +1,6 @@
-import { RedisClient } from 'common/types/redis';
-import { Mutex } from 'common/types/mutex';
-import { ReadonlyArrayOf } from 'common/types/util';
+import { RedisClient } from './common/types/redis';
+import { Mutex } from './common/types/mutex';
+import { ReadonlyArrayOf } from './common/types/util';
 
 import Lua from './lua';
 import { unique } from './util/functional';

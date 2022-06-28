@@ -1,4 +1,4 @@
-import { ArrayOf } from 'common/types/util';
+import { ArrayOf } from './common/types/util';
 
 import MaxRetryAttemptsError from './common/errors/max-retry-attempts-error';
 import { uniformRandom } from './util/random';
@@ -22,10 +22,10 @@ function computeJitter(magnitude: number) {
   return Math.round(uniformRandom(-magnitude, magnitude));
 }
 
-export function withRetries<T extends ArrayOf<unknown>, U>(
+export const withRetries = <T extends ArrayOf<unknown>, U>(
   fn: (...args: T) => Promise<U>,
   options?: PartialWithRetriesOptions,
-) {
+) => {
   return async function <C>(this: C, ...forwardArgs: T) {
     const maxRetryAttempts = options?.maxRetryAttempts ?? DEFAULT_MAX_RETRY_ATTEMPTS;
     const retryDelayMillis = options?.retryDelayMillis ?? DEFAULT_RETRY_DELAY_MILLIS;
@@ -54,6 +54,6 @@ export function withRetries<T extends ArrayOf<unknown>, U>(
 
     throw new MaxRetryAttemptsError('Failed', maxRetryAttempts);
   };
-}
+};
 
 withRetries.RETRY_SYMBOL = RETRY_SYMBOL;

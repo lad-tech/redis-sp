@@ -1,4 +1,4 @@
-import { ReadonlyArrayOf } from 'common/types/util';
+import { ReadonlyArrayOf } from '../types/util';
 
 export default class MultiError<T> extends Error {
   constructor(message: string, public readonly errors: ReadonlyArrayOf<T>) {

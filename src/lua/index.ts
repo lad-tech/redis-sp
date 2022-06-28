@@ -1,8 +1,8 @@
-import fs from 'fs';
-import path from 'path';
+import * as fs from 'fs';
+import * as path from 'path';
 
-import { RedisClient } from 'common/types/redis';
-import { Maybe, ArrayOf, ReadonlyArrayOf } from 'common/types/util';
+import { RedisClient } from '../common/types/redis';
+import { Maybe, ArrayOf, ReadonlyArrayOf } from '../common/types/util';
 
 import ValidationError from '../common/errors/validation-error';
 import { isNumber, isString } from '../util/predicates';

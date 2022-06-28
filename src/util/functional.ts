@@ -1,4 +1,4 @@
-import { ArrayOf, ReadonlyArrayOf } from 'common/types/util';
+import { ArrayOf, ReadonlyArrayOf } from '../common/types/util';
 
 export function unique<T>(...args: ReadonlyArrayOf<T>) {
   return Array.from(new Set(args));

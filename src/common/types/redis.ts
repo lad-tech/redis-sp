@@ -1,3 +1,3 @@
-import RedisClient from 'ioredis';
+import { Redis } from 'ioredis';
 
-export { RedisClient };
+export { Redis as RedisClient };

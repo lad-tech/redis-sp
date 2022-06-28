@@ -1,7 +1,5 @@
-import { RedisClient } from '../../src/common/types/redis';
-
 import { execLuaScript } from '../../src/util/redis';
-import { asMockedFunction } from '../../src/util/tests';
+import { createRedisClientStub } from '../../src/util/tests';
 
 jest.mock('ioredis');
 
@@ -12,9 +10,10 @@ describe('execLuaScript positive test cases', () => {
   });
 
   it('should successfully execute the Lua script by its hash', async () => {
-    const client = new RedisClient();
+    const client = createRedisClientStub();
 
-    asMockedFunction(client.evalsha).mockResolvedValueOnce('OK');
+    client.evalsha = jest.fn(async () => 'OK');
+    client.eval = jest.fn();
 
     const result = await execLuaScript(client, `return 'OK'`, '57ade87c8731f041ecac85aba56623f8af391fab');
 
@@ -27,10 +26,12 @@ describe('execLuaScript positive test cases', () => {
   });
 
   it('should successfully execute the Lua script by calling the `eval` method', async () => {
-    const client = new RedisClient();
+    const client = createRedisClientStub();
 
-    asMockedFunction(client.evalsha).mockRejectedValueOnce(new Error('NOSCRIPT'));
-    asMockedFunction(client.eval).mockResolvedValueOnce('OK');
+    client.evalsha = jest.fn(async () => {
+      throw new Error('NOSCRIPT');
+    });
+    client.eval = jest.fn(async () => 'OK');
 
     const result = await execLuaScript(client, `return 'OK'`, '57ade87c8731f041ecac85aba56623f8af391fab');
 
@@ -51,10 +52,13 @@ describe('execLuaScript negative test cases', () => {
   });
 
   it('should throw an exception if an unexpected error occurred', async () => {
-    const client = new RedisClient();
+    const client = createRedisClientStub();
     const unexpectedError = new Error('Oops!');
 
-    asMockedFunction(client.evalsha).mockRejectedValueOnce(unexpectedError);
+    client.evalsha = jest.fn(async () => {
+      throw unexpectedError;
+    });
+    client.eval = jest.fn();
 
     await expect(execLuaScript(client, `return 'OK'`, '57ade87c8731f041ecac85aba56623f8af391fab')).rejects.toThrowError(
       unexpectedError,
